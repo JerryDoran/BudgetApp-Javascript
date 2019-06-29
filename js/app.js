@@ -20,6 +20,7 @@ class UI {
   // Submit Budget Method
   submitBudgetForm() {
     const value = this.budgetInput.value;
+    console.log(value);
     if (value === '' || value < 0) {
       this.budgetFeedback.classList.add('show-item');
       this.budgetFeedback.innerHTML = `<p>value cannot be empty or negative</p>`;
@@ -77,14 +78,17 @@ class UI {
         amount: amount
       };
 
-      this.itemID + 1;
+      this.itemID += 1;
       this.itemList.push(expense);
+      console.log(expense);
 
       // Display expense
       this.displayExpense(expense);
 
       // Show balance
       this.showBalance();
+
+      LocalStorage.saveExpenses(this.itemList);
     }
   }
 
@@ -154,6 +158,8 @@ class UI {
 
     this.itemList = tempList;
     this.showBalance();
+
+    LocalStorage.saveExpenses(this.itemList);
   }
 
   // Delete Expense Method
@@ -171,6 +177,15 @@ class UI {
 
     this.itemList = tempList;
     this.showBalance();
+
+    LocalStorage.saveExpenses(this.itemList);
+  }
+}
+
+class LocalStorage {
+  // Save expense items to local storage database
+  static saveExpenses(expenses) {
+    localStorage.setItem('expenses', JSON.stringify(expenses));
   }
 }
 
